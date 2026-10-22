@@ -1,4 +1,4 @@
-module github.com/fyne-io/terminal
+module github.com/LenMoon/terminal
 
 go 1.22.0
 
