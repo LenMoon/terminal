@@ -3,7 +3,6 @@ package terminal
 import (
 	"fmt"
 	"image/color"
-	"reflect"
 	"testing"
 
 	"fyne.io/fyne/v2"
@@ -30,11 +29,11 @@ func testColor(t *testing.T, tests map[string]struct {
 			terminal.handleOutput([]byte(test.inputSeq))
 
 			// Verify the actual results match the expected results
-			if !reflect.DeepEqual(terminal.currentFG, test.expectedFg) {
+			if !sameColor(terminal.currentFG, test.expectedFg) {
 				t.Errorf("Foreground color mismatch. Got %v, expected %v", terminal.currentFG, test.expectedFg)
 			}
 
-			if !reflect.DeepEqual(terminal.currentBG, test.expectedBg) {
+			if !sameColor(terminal.currentBG, test.expectedBg) {
 				t.Errorf("Background color mismatch. Got %v, expected %v", terminal.currentBG, test.expectedBg)
 			}
 			if terminal.bold != test.expectedStyle.Bold {
@@ -51,6 +50,16 @@ func testColor(t *testing.T, tests map[string]struct {
 			}
 		})
 	}
+}
+
+// sameColor reports whether two colors render alike; nil only matches nil.
+func sameColor(a, b color.Color) bool {
+	if a == nil || b == nil {
+		return a == nil && b == nil
+	}
+	ar, ag, ab, aa := a.RGBA()
+	br, bg, bb, ba := b.RGBA()
+	return ar == br && ag == bg && ab == bb && aa == ba
 }
 
 func TestHandleOutput_Text(t *testing.T) {
@@ -843,10 +852,10 @@ func TestHandleOutput_BufferCutoff(t *testing.T) {
 	tg.Rows = []widget.TextGridRow{
 		{
 			Cells: []widget.TextGridCell{
-				{Rune: '4', Style: &widget.CustomTextGridStyle{FGColor: c1, BGColor: nil, TextStyle: mono}},
-				{Rune: '0', Style: &widget.CustomTextGridStyle{FGColor: c1, BGColor: nil, TextStyle: mono}},
-				{Rune: '4', Style: &widget.CustomTextGridStyle{FGColor: c2, BGColor: nil, TextStyle: mono}},
-				{Rune: '1', Style: &widget.CustomTextGridStyle{FGColor: c2, BGColor: nil, TextStyle: mono}},
+				{Rune: '4', Style: &cellStyle{widget.CustomTextGridStyle{FGColor: c1, BGColor: nil, TextStyle: mono}}},
+				{Rune: '0', Style: &cellStyle{widget.CustomTextGridStyle{FGColor: c1, BGColor: nil, TextStyle: mono}}},
+				{Rune: '4', Style: &cellStyle{widget.CustomTextGridStyle{FGColor: c2, BGColor: nil, TextStyle: mono}}},
+				{Rune: '1', Style: &cellStyle{widget.CustomTextGridStyle{FGColor: c2, BGColor: nil, TextStyle: mono}}},
 			},
 		},
 	}

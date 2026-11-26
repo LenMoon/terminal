@@ -246,7 +246,7 @@ func escapeEraseChars(t *Terminal, msg string) {
 		end++
 	}
 
-	cellStyle := &widget.CustomTextGridStyle{FGColor: t.currentFG, BGColor: t.currentBG}
+	cellStyle := &cellStyle{widget.CustomTextGridStyle{FGColor: t.currentFG, BGColor: t.currentBG}}
 	for len(row.Cells) < end {
 		row.Cells = append(row.Cells, widget.TextGridCell{Rune: ' ', Style: cellStyle})
 	}
@@ -483,7 +483,7 @@ func escapeInsertChars(t *Terminal, msg string) {
 	insertCol := t.cellStart(t.cursorRow, t.cursorCol)
 
 	newCells := make([]widget.TextGridCell, chars)
-	cellStyle := &widget.CustomTextGridStyle{FGColor: t.currentFG, BGColor: t.currentBG, TextStyle: fyne.TextStyle{Monospace: true}}
+	cellStyle := &cellStyle{widget.CustomTextGridStyle{FGColor: t.currentFG, BGColor: t.currentBG, TextStyle: fyne.TextStyle{Monospace: true}}}
 	for i := range newCells {
 		newCells[i] = widget.TextGridCell{
 			Rune:  ' ',
