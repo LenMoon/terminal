@@ -141,16 +141,16 @@ func (t *Terminal) handleColorModeMap(mode, ids string) {
 		}
 		return
 	}
-	if id <= 15 {
+	if id >= 0 && id <= 15 {
 		c = widget2.ANSI(uint8(id))
-	} else if id <= 231 {
+	} else if id >= 16 && id <= 231 {
 		id -= 16
 		b := id % 6
 		id = (id - b) / 6
 		g := id % 6
 		r := (id - g) / 6
 		c = &color.RGBA{colourBands[r], colourBands[g], colourBands[b], 255}
-	} else if id <= 255 {
+	} else if id >= 232 && id <= 255 {
 		id -= 232
 		inc := 256 / 24
 		y := id * inc
