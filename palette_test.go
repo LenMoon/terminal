@@ -9,6 +9,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/theme"
+	"fyne.io/fyne/v2/widget"
 	widget2 "github.com/fyne-io/terminal/internal/widget"
 	"github.com/stretchr/testify/assert"
 )
@@ -72,6 +73,37 @@ func TestHandleOutput_PaletteSlots(t *testing.T) {
 					})
 				}
 			}
+		})
+	}
+}
+
+// A 256-color index outside 0–255 must not crash the terminal: a negative index
+// used to reach the palette as a wrapped uint8, and the cell holding it crashed
+// the app the moment it was painted.
+func TestHandleOutput_OutOfRangeColorIndex(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		seq  string
+	}{
+		{"negative foreground", esc("[38;5;-1m")},
+		{"negative background", esc("[48;5;-1m")},
+		{"negative and blinking", esc("[5;38;5;-1m")},
+		{"wraps to slot 0", esc("[38;5;-256m")},
+		{"above the range", esc("[38;5;256m")},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			term := New()
+			term.Resize(fyne.NewSize(80, 50))
+			var style widget.TextGridStyle
+			assert.NotPanics(t, func() {
+				term.handleOutput([]byte(tc.seq + "x"))
+				style = term.content.Rows[0].Cells[0].Style
+			})
+			if style == nil {
+				return // the assertion above already failed
+			}
+			assert.Nil(t, style.TextColor())
+			assert.Nil(t, style.BackgroundColor())
 		})
 	}
 }
