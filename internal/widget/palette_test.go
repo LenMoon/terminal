@@ -83,6 +83,23 @@ func TestSystemThemeVariant(t *testing.T) {
 	assert.Equal(t, theme.VariantLight, systemThemeVariant())
 }
 
+// A palette color looked up under one variant stays what it was, but is looked up
+// again for whichever variant is active when it is resolved.
+func TestResolve(t *testing.T) {
+	pinVariant(t, theme.VariantLight)
+	c := ANSI(4)
+	assert.Equal(t, rgba(hexColor("#0000aa")), rgba(c))
+
+	pinVariant(t, theme.VariantDark)
+	assert.Equal(t, rgba(hexColor("#0000aa")), rgba(c))          // looked up earlier: unchanged
+	assert.Equal(t, rgba(hexColor("#7b7bff")), rgba(Resolve(c))) // looked up again for the active variant
+	assert.Equal(t, PaletteColor{Slot: 4, Variant: theme.VariantDark}, Resolve(c))
+
+	other := &color.RGBA{R: 1, G: 2, B: 3, A: 255}
+	assert.Same(t, other, Resolve(other))
+	assert.Nil(t, Resolve(nil))
+}
+
 // pinVariant keeps palette lookups on one theme variant for the rest of the test.
 func pinVariant(t *testing.T, v fyne.ThemeVariant) {
 	t.Helper()
