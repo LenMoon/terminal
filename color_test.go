@@ -144,12 +144,12 @@ func TestHandleOutput_ANSI_Colors(t *testing.T) {
 		},
 		"[32m": {
 			inputSeq:   esc("[32m"),
-			expectedFg: &color.RGBA{0, 170, 0, 255},
+			expectedFg: &color.RGBA{0, 128, 0, 255},
 			expectedBg: nil,
 		},
 		"[33m": {
 			inputSeq:   esc("[33m"),
-			expectedFg: &color.RGBA{170, 170, 0, 255},
+			expectedFg: &color.RGBA{112, 112, 0, 255},
 			expectedBg: nil,
 		},
 		"[34m": {
@@ -164,23 +164,23 @@ func TestHandleOutput_ANSI_Colors(t *testing.T) {
 		},
 		"[36m": {
 			inputSeq:   esc("[36m"),
-			expectedFg: &color.RGBA{0, 255, 255, 255},
+			expectedFg: &color.RGBA{0, 112, 112, 255},
 			expectedBg: nil,
 		},
 		"[37m": {
 			inputSeq:   esc("[37m"),
-			expectedFg: &color.RGBA{170, 170, 170, 255},
+			expectedFg: &color.RGBA{112, 112, 112, 255},
 			expectedBg: nil,
 		},
 		"bold": {
 			inputSeq:      esc("[1m") + esc("[37m"),
-			expectedFg:    &color.RGBA{170, 170, 170, 255},
+			expectedFg:    &color.RGBA{112, 112, 112, 255},
 			expectedBg:    nil,
 			expectedStyle: fyne.TextStyle{Bold: true},
 		},
 		"reverse video": {
 			inputSeq:   esc("[7m") + esc("[37m"),
-			expectedFg: &color.RGBA{170, 170, 170, 255},
+			expectedFg: &color.RGBA{112, 112, 112, 255},
 			expectedBg: color.NRGBA{255, 255, 255, 255},
 		},
 		"underline": {
@@ -223,74 +223,74 @@ func TestHandleOutput_xterm_bright(t *testing.T) {
 		},
 		"[91m": {
 			inputSeq:   esc("[91m"),
-			expectedFg: &color.RGBA{255, 85, 85, 255},
+			expectedFg: &color.RGBA{204, 0, 0, 255},
 			expectedBg: nil,
 		},
 		"[101m": {
 			inputSeq:   esc("[101m"),
 			expectedFg: nil,
-			expectedBg: &color.RGBA{255, 85, 85, 255},
+			expectedBg: &color.RGBA{204, 0, 0, 255},
 		},
 		"[92m": {
 			inputSeq:   esc("[92m"),
-			expectedFg: &color.RGBA{85, 255, 85, 255},
+			expectedFg: &color.RGBA{0, 100, 0, 255},
 			expectedBg: nil,
 		},
 		"[102m": {
 			inputSeq:   esc("[102m"),
 			expectedFg: nil,
-			expectedBg: &color.RGBA{85, 255, 85, 255},
+			expectedBg: &color.RGBA{0, 100, 0, 255},
 		},
 		"[93m": {
 			inputSeq:   esc("[93m"),
-			expectedFg: &color.RGBA{255, 255, 85, 255},
+			expectedFg: &color.RGBA{92, 92, 0, 255},
 			expectedBg: nil,
 		},
 		"[103m": {
 			inputSeq:   esc("[103m"),
 			expectedFg: nil,
-			expectedBg: &color.RGBA{255, 255, 85, 255},
+			expectedBg: &color.RGBA{92, 92, 0, 255},
 		},
 		"[94m": {
 			inputSeq:   esc("[94m"),
-			expectedFg: &color.RGBA{85, 85, 255, 255},
+			expectedFg: &color.RGBA{0, 0, 204, 255},
 			expectedBg: nil,
 		},
 		"[104m": {
 			inputSeq:   esc("[104m"),
 			expectedFg: nil,
-			expectedBg: &color.RGBA{85, 85, 255, 255},
+			expectedBg: &color.RGBA{0, 0, 204, 255},
 		},
 		"[95m": {
 			inputSeq:   esc("[95m"),
-			expectedFg: &color.RGBA{255, 85, 255, 255},
+			expectedFg: &color.RGBA{196, 0, 196, 255},
 			expectedBg: nil,
 		},
 		"[105m": {
 			inputSeq:   esc("[105m"),
 			expectedFg: nil,
-			expectedBg: &color.RGBA{255, 85, 255, 255},
+			expectedBg: &color.RGBA{196, 0, 196, 255},
 		},
 		"[96m": {
 			inputSeq:   esc("[96m"),
-			expectedFg: &color.RGBA{85, 255, 255, 255},
+			expectedFg: &color.RGBA{0, 92, 92, 255},
 			expectedBg: nil,
 		},
 
 		"[106m": {
 			inputSeq:   esc("[106m"),
 			expectedFg: nil,
-			expectedBg: &color.RGBA{85, 255, 255, 255},
+			expectedBg: &color.RGBA{0, 92, 92, 255},
 		},
 		"[97m": {
 			inputSeq:   esc("[97m"),
-			expectedFg: &color.RGBA{255, 255, 255, 255},
+			expectedFg: &color.RGBA{88, 88, 88, 255},
 			expectedBg: nil,
 		},
 		"[107m": {
 			inputSeq:   esc("[107m"),
 			expectedFg: nil,
-			expectedBg: &color.RGBA{255, 255, 255, 255},
+			expectedBg: &color.RGBA{88, 88, 88, 255},
 		},
 	}
 
@@ -466,7 +466,7 @@ func TestHandleOutput_xterm_256_1(t *testing.T) {
 		},
 		"[32;48;5;16m": {
 			inputSeq:   esc("[32;48;5;16m"),
-			expectedFg: &color.RGBA{0, 170, 0, 255},
+			expectedFg: &color.RGBA{0, 128, 0, 255},
 			expectedBg: &color.RGBA{0, 0, 0, 255},
 		},
 		"[48;5;22m": {
@@ -526,7 +526,7 @@ func TestHandleOutput_xterm_256_1(t *testing.T) {
 		},
 		"[33;48;5;16m": {
 			inputSeq:   esc("[33;48;5;16m"),
-			expectedFg: &color.RGBA{170, 170, 0, 255},
+			expectedFg: &color.RGBA{112, 112, 0, 255},
 			expectedBg: &color.RGBA{0, 0, 0, 255},
 		},
 		"[48;5;58m": {
@@ -586,7 +586,7 @@ func TestHandleOutput_xterm_256_1(t *testing.T) {
 		},
 		"[36;48;5;16m": {
 			inputSeq:   esc("[36;48;5;16m"),
-			expectedFg: &color.RGBA{0, 255, 255, 255},
+			expectedFg: &color.RGBA{0, 112, 112, 255},
 			expectedBg: &color.RGBA{0, 0, 0, 255},
 		},
 		"[48;5;23m": {
@@ -638,12 +638,12 @@ func TestHandleOutput_xterm_256_2(t *testing.T) {
 		},
 		"[38;5;2m": {
 			inputSeq:   esc("[38;5;2m"),
-			expectedFg: &color.RGBA{0, 170, 0, 255},
+			expectedFg: &color.RGBA{0, 128, 0, 255},
 			expectedBg: nil,
 		},
 		"[38;5;3m": {
 			inputSeq:   esc("[38;5;3m"),
-			expectedFg: &color.RGBA{170, 170, 0, 255},
+			expectedFg: &color.RGBA{112, 112, 0, 255},
 			expectedBg: nil,
 		},
 		"[38;5;4m": {
@@ -658,12 +658,12 @@ func TestHandleOutput_xterm_256_2(t *testing.T) {
 		},
 		"[38;5;6m": {
 			inputSeq:   esc("[38;5;6m"),
-			expectedFg: &color.RGBA{0, 255, 255, 255},
+			expectedFg: &color.RGBA{0, 112, 112, 255},
 			expectedBg: nil,
 		},
 		"[38;5;7m": {
 			inputSeq:   esc("[38;5;7m"),
-			expectedFg: &color.RGBA{170, 170, 170, 255},
+			expectedFg: &color.RGBA{112, 112, 112, 255},
 			expectedBg: nil,
 		},
 		"[38;5;8m": {
@@ -673,37 +673,37 @@ func TestHandleOutput_xterm_256_2(t *testing.T) {
 		},
 		"[38;5;9m": {
 			inputSeq:   esc("[38;5;9m"),
-			expectedFg: &color.RGBA{255, 85, 85, 255},
+			expectedFg: &color.RGBA{204, 0, 0, 255},
 			expectedBg: nil,
 		},
 		"[38;5;10m": {
 			inputSeq:   esc("[38;5;10m"),
-			expectedFg: &color.RGBA{85, 255, 85, 255},
+			expectedFg: &color.RGBA{0, 100, 0, 255},
 			expectedBg: nil,
 		},
 		"[38;5;11m": {
 			inputSeq:   esc("[38;5;11m"),
-			expectedFg: &color.RGBA{255, 255, 85, 255},
+			expectedFg: &color.RGBA{92, 92, 0, 255},
 			expectedBg: nil,
 		},
 		"[38;5;12m": {
 			inputSeq:   esc("[38;5;12m"),
-			expectedFg: &color.RGBA{85, 85, 255, 255},
+			expectedFg: &color.RGBA{0, 0, 204, 255},
 			expectedBg: nil,
 		},
 		"[38;5;13m": {
 			inputSeq:   esc("[38;5;13m"),
-			expectedFg: &color.RGBA{255, 85, 255, 255},
+			expectedFg: &color.RGBA{196, 0, 196, 255},
 			expectedBg: nil,
 		},
 		"[38;5;14m": {
 			inputSeq:   esc("[38;5;14m"),
-			expectedFg: &color.RGBA{85, 255, 255, 255},
+			expectedFg: &color.RGBA{0, 92, 92, 255},
 			expectedBg: nil,
 		},
 		"[38;5;15m": {
 			inputSeq:   esc("[38;5;15m"),
-			expectedFg: &color.RGBA{255, 255, 255, 255}, // White
+			expectedFg: &color.RGBA{88, 88, 88, 255}, // White
 			expectedBg: nil,
 		},
 		"[38;5;16m": {

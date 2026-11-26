@@ -8,38 +8,17 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/theme"
+	widget2 "github.com/fyne-io/terminal/internal/widget"
 )
 
-var (
-	basicColors = []color.Color{
-		color.Black,
-		&color.RGBA{170, 0, 0, 255},
-		&color.RGBA{0, 170, 0, 255},
-		&color.RGBA{170, 170, 0, 255},
-		&color.RGBA{0, 0, 170, 255},
-		&color.RGBA{170, 0, 170, 255},
-		&color.RGBA{0, 255, 255, 255},
-		&color.RGBA{170, 170, 170, 255},
-	}
-	brightColors = []color.Color{
-		&color.RGBA{85, 85, 85, 255},
-		&color.RGBA{255, 85, 85, 255},
-		&color.RGBA{85, 255, 85, 255},
-		&color.RGBA{255, 255, 85, 255},
-		&color.RGBA{85, 85, 255, 255},
-		&color.RGBA{255, 85, 255, 255},
-		&color.RGBA{85, 255, 255, 255},
-		&color.RGBA{255, 255, 255, 255},
-	}
-	colourBands = []uint8{
-		0x00,
-		0x5f,
-		0x87,
-		0xaf,
-		0xd7,
-		0xff,
-	}
-)
+var colourBands = []uint8{
+	0x00,
+	0x5f,
+	0x87,
+	0xaf,
+	0xd7,
+	0xff,
+}
 
 func (t *Terminal) handleColorEscape(message string) {
 	if message == "" || message == "0" {
@@ -135,17 +114,17 @@ func (t *Terminal) handleColorMode(modeStr string) {
 			t.currentFG = bg
 		}
 	case 30, 31, 32, 33, 34, 35, 36, 37:
-		t.currentFG = basicColors[mode-30]
+		t.currentFG = widget2.ANSI(uint8(mode - 30))
 	case 39:
 		t.currentFG = nil
 	case 40, 41, 42, 43, 44, 45, 46, 47:
-		t.currentBG = basicColors[mode-40]
+		t.currentBG = widget2.ANSI(uint8(mode - 40))
 	case 49:
 		t.currentBG = nil
 	case 90, 91, 92, 93, 94, 95, 96, 97:
-		t.currentFG = brightColors[mode-90]
+		t.currentFG = widget2.ANSI(uint8(mode - 90 + 8))
 	case 100, 101, 102, 103, 104, 105, 106, 107:
-		t.currentBG = brightColors[mode-100]
+		t.currentBG = widget2.ANSI(uint8(mode - 100 + 8))
 	default:
 		if t.debug {
 			log.Println("Unsupported graphics mode", mode)
@@ -162,10 +141,8 @@ func (t *Terminal) handleColorModeMap(mode, ids string) {
 		}
 		return
 	}
-	if id <= 7 {
-		c = basicColors[id]
-	} else if id <= 15 {
-		c = brightColors[id-8]
+	if id <= 15 {
+		c = widget2.ANSI(uint8(id))
 	} else if id <= 231 {
 		id -= 16
 		b := id % 6
