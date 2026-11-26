@@ -61,10 +61,33 @@ func systemThemeVariant() fyne.ThemeVariant {
 	return theme.VariantDark
 }
 
-// ANSI returns the color of ANSI slot (0–15) for the active theme variant.
-func ANSI(slot uint8) color.Color {
-	if ThemeVariant() == theme.VariantDark {
-		return darkPalette[slot]
+// PaletteColor is one of the 16 ANSI colors, tied to the theme variant it was
+// looked up under. Being a comparable value, Fyne's text texture cache can tell
+// the two variants of a slot apart.
+type PaletteColor struct {
+	Slot    uint8
+	Variant fyne.ThemeVariant
+}
+
+// RGBA implements color.Color.
+func (c PaletteColor) RGBA() (uint32, uint32, uint32, uint32) {
+	pal := lightPalette
+	if c.Variant == theme.VariantDark {
+		pal = darkPalette
 	}
-	return lightPalette[slot]
+	return pal[c.Slot].RGBA()
+}
+
+// ANSI returns the color of ANSI slot (0–15) for the active theme variant.
+func ANSI(slot uint8) PaletteColor {
+	return PaletteColor{Slot: slot, Variant: ThemeVariant()}
+}
+
+// Resolve returns c for the active theme variant: a palette color is looked up
+// again, any other color is returned unchanged.
+func Resolve(c color.Color) color.Color {
+	if p, ok := c.(PaletteColor); ok {
+		return ANSI(p.Slot)
+	}
+	return c
 }

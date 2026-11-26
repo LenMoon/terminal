@@ -333,7 +333,7 @@ func (t *Terminal) handleOutputChar(r rune) {
 		}
 	}
 
-	var cellStyle widget.TextGridStyle
+	var style widget.TextGridStyle
 	textStyle := fyne.TextStyle{
 		Monospace: true,
 
@@ -342,16 +342,16 @@ func (t *Terminal) handleOutputChar(r rune) {
 		Underline:     t.underline,
 		Strikethrough: t.strikethrough,
 	}
-	cellStyle = &widget.CustomTextGridStyle{
+	style = &cellStyle{widget.CustomTextGridStyle{
 		FGColor: t.currentFG, BGColor: t.currentBG,
 		TextStyle: textStyle,
-	}
+	}}
 	if t.blinking {
-		cellStyle = widget2.NewTermTextGridStyle(t.currentFG, t.currentBG, highlightBitMask, t.blinking, textStyle)
+		style = widget2.NewTermTextGridStyle(t.currentFG, t.currentBG, highlightBitMask, t.blinking, textStyle)
 	}
 
 	row, col := t.cursorRow, t.cursorCol
-	cell := widget.TextGridCell{Rune: r, Style: cellStyle}
+	cell := widget.TextGridCell{Rune: r, Style: style}
 	oldLen := 0
 	if len(t.content.Rows) > row {
 		oldLen = len(t.content.Rows[row].Cells)

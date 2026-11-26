@@ -196,9 +196,9 @@ func (h *TermTextGridStyle) TextColor() color.Color {
 		if h.OriginalBackgroundColor == nil {
 			return color.Transparent
 		}
-		return h.OriginalBackgroundColor
+		return Resolve(h.OriginalBackgroundColor)
 	}
-	return h.OriginalTextColor
+	return Resolve(h.OriginalTextColor)
 }
 
 // BackgroundColor returns the background color, depending on whether it is highlighted.
@@ -206,7 +206,7 @@ func (h *TermTextGridStyle) BackgroundColor() color.Color {
 	if h.Highlighted {
 		return h.InvertedBackgroundColor
 	}
-	return h.OriginalBackgroundColor
+	return Resolve(h.OriginalBackgroundColor)
 }
 
 func (h *TermTextGridStyle) blink(b bool) {
